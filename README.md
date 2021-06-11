@@ -126,6 +126,10 @@ de las siguientes maneras.
 #### Usando un CDN
 
 ```html
+<!-- Para la versión 1.0.1 -->
+<script src="https://cdn.jsdelivr.net/gh/shino47/laravel-yappy-checkout@1.0.1/resources/assets/js/yappy-checkout.js"></script>
+
+<!-- Para la última versión. Inestable, sólo para machotes. -->
 <script src="https://cdn.jsdelivr.net/gh/shino47/laravel-yappy-checkout@main/resources/assets/js/yappy-checkout.js"></script>
 ```
 #### Usando el generado en el vendor:publish
