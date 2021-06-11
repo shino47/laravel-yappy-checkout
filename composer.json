@@ -1,0 +1,23 @@
+{
+    "name": "shino47/laravel-yappy-checkout",
+    "description": "Integración para Laravel del Botón de Pago Yappy",
+    "license": "MIT",
+    "require": {
+        "guzzlehttp/guzzle": "^7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "BancoGeneral\\YappyCheckout\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BancoGeneral\\YappyCheckout\\YappyCheckoutServiceProvider"
+            ],
+            "aliases": {
+                "YappyCheckout": "BancoGeneral\\YappyCheckout\\Facades\\YappyCheckoutFacade"
+            }
+        }
+    }
+}
