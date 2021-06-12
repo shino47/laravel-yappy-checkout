@@ -189,6 +189,7 @@ class YappyCheckout
             $data['domain'],
         ]), $this->getApiKey(0));
         if (strcmp($data['hash'], $signature) !== 0) {
+            Log::error('[YAPPY] Error al verificar el estado: ' . json_encode($data));
             return null;
         }
         return [
