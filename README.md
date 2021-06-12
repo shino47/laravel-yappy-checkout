@@ -100,18 +100,23 @@ de jugar con esta información en nuestra aplicación.
 Primero, agregamos lo siguiente en donde queramos nuestro botón.
 
 ```html
+<!-- Este es un botón con el tema por defecto y dice Pagar -->
+<button type="submit">
+    <div id="Yappy_Checkout_Button"></div>
+</button>
+
+<!-- Este es un botón con el tema oscuro y dice Donar -->
 <a href="/pagar-con-yappy">
     <div
         id="Yappy_Checkout_Button"
-        data-color="brand"
+        data-color="dark"
         data-donacion
     ></div>
 </a>
 ```
 
 Lamentablemente, hicieron que el botón por fuerza sea un `div` (en el CSS). En nuestro caso, no nos
-vamos a complicar y vamos en envolver ese `div` en una etiqueda `a` y definiremos una ruta que
-usaremos más adelante.
+vamos a complicar y vamos en envolver ese `div` en una etiqueda `a` o `button`.
 
 Como vemos, el botón acepta atributos de tipo data.
 
@@ -163,8 +168,8 @@ Y en nuestras vistas:
 
 ### Redireccionar al cliente
 
-Una vez el usuario haya presionado el enlace, la petición será recibida en nuestro controlador
-de la siguiente manera.
+Una vez el usuario haya presionado el enlace o botón, la petición será recibida en nuestro
+controlador de la siguiente manera.
 
 ```php
 use YappyCheckout;
@@ -181,7 +186,7 @@ class YeyoController extends Controller
 ```
 
 El método `getPaymentUrl` devuelve `null` si ha habido un error generando la URL; en ese caso
-verifica las credenciales del comercio. Este método recibe cuatro parámetros:
+verifica las credenciales del comercio. Este método recibe los siguientes parámetros:
 
 Variable   | Tipo            | Descripción
 ---------- | --------------- | -----------
@@ -189,18 +194,23 @@ Variable   | Tipo            | Descripción
 `subtotal` | `float`         | Subtotal de la compra.
 `tax`      | `float`         | Impuesto de la compra.
 `total`    | `float`         | Total de la compra.
+`phone`    | `string`        | El número de teléfono del usuario (opcional).
 
 Si todo sale bien, el usuario será redirigido a esa URL generada.
 
 ### Recibir el estado de la transacción
 
 Una vez terminada la transacción, Yappy nos enviará el estado a nuestro servidor a
-`dominio/pagosbg.php`. Lamentablemente, no podemos cambiar esa ruta, así que toca trabajar con ese
-`.php` feíto en la URL.
+`mi-dominio.com/pagosbg.php`. Lamentablemente, no podemos cambiar esa ruta, así que toca trabajar
+con ese `.php` feíto en la URL.
 
 Creamos nuestra ruta en `routes/web.php`.
 
 ```php
+// Para Laravel 8 en adelante
+Route::get('/pagosbg.php', [YeyoController::class, 'yappyPaymentStatus']);
+
+// O para versiones anteriores
 Route::get('/pagosbg.php', 'YeyoController@yappyPaymentStatus');
 ```
 
