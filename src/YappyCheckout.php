@@ -139,16 +139,37 @@ class YappyCheckout
     }
 
     /**
+     * Devuelve el número del cliente con el formato válido.
+     *
+     * @param  string|null  $phone
+     * @return  string
+     */
+    private function getValidPhone($phone): string
+    {
+        $phone = preg_replace('/\D/', '', $phone ?? '');
+        if (strlen($phone) == 8 && $phone[0] == '6') {
+            return $phone;
+        }
+        return '';
+    }
+
+    /**
      * Obtiene la URL de la página de pago.
      *
      * @param  string|int  $orderId
      * @param  float  $subtotal
      * @param  float  $tax
      * @param  float  $total
+     * @param  string  $phone
      * @return string|null
      */
-    public function getPaymentUrl($orderId, float $subtotal, float $tax, float $total): ?string
-    {
+    public function getPaymentUrl(
+        $orderId,
+        float $subtotal,
+        float $tax,
+        float $total,
+        string $phone=null
+    ): ?string {
         $credentials = $this->validateCredentials();
         if (is_null($credentials)) {
             return null;
@@ -171,6 +192,7 @@ class YappyCheckout
             'jwtToken' => $jwtToken,
             'signature' => $this->getSignature($timestamp, $orderId, $subtotal, $tax, $total),
             'sbx' => $this->sandbox,
+            'tel' => $this->getValidPhone($phone),
         ], '', '&', \PHP_QUERY_RFC3986);
     }
 
@@ -183,18 +205,29 @@ class YappyCheckout
      */
     public function getPaymentStatus(array $data): ?array
     {
-        $signature = hash_hmac(self::HASH_TYPE, implode([
-            $data['orderId'],
-            $data['status'],
-            $data['domain'],
-        ]), $this->getApiKey(0));
-        if (strcmp($data['hash'], $signature) !== 0) {
-            Log::error('[YAPPY] Error al verificar el estado: ' . json_encode($data));
+        try {
+            $required = ['orderId', 'status', 'domain', 'hash'];
+            if (count(array_intersect_key(array_flip($required), $data)) !== count($required)) {
+                throw new \Exception();
+            }
+            $signature = hash_hmac(self::HASH_TYPE, implode([
+                $data['orderId'],
+                $data['status'],
+                $data['domain'],
+            ]), $this->getApiKey(0));
+            if (strcmp($data['hash'], $signature) !== 0) {
+                throw new \Exception();
+            }
+            return [
+                'order_id' => $data['orderId'],
+                'status' => $data['status'],
+            ];
+        }
+        catch (\Exception $e) {
+            if ($this->logsEnabled) {
+                Log::error('[YAPPY] Error al verificar el estado: ' . json_encode($data));
+            }
             return null;
         }
-        return [
-            'order_id' => $data['orderId'],
-            'status' => $data['status'],
-        ];
     }
 }
