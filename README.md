@@ -92,7 +92,7 @@ pago.
 fuera de nuestra aplicación. El flujo continúa del lado de Yappy.
 4. Luego de que se haga, falle o cancele la transacción, Yappy nos hará una petición a un endpoint
 de nuestra aplicación.
-5. En esta petición Yappy nos envía el número de orden y el estado de la trasacción. Somos libres
+5. En esta petición Yappy nos envía el número de orden y el estado de la transacción. Somos libres
 de jugar con esta información en nuestra aplicación.
 
 ### Agregar el botón a nuestras vistas
@@ -173,7 +173,7 @@ class YeyoController extends Controller
 {
     public function redirectToYappyPayment()
     {
-        $url = YappyCheckout::getPaymentUrl($orderId, $ubtotal, $tax, $total);
+        $url = YappyCheckout::getPaymentUrl($orderId, $subtotal, $tax, $total);
         abort_if(is_null($url), 500);
         return redirect()->away($url);
     }
