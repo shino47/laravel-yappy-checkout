@@ -2,6 +2,7 @@
 
 namespace BancoGeneral\YappyCheckout;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
 class YappyCheckoutServiceProvider extends ServiceProvider
@@ -24,7 +25,7 @@ class YappyCheckoutServiceProvider extends ServiceProvider
         );
 
         $this->app->bind('yappy_checkout', function($app) {
-            return new YappyCheckout();
+            return new YappyCheckout(new Client());
         });
     }
 }
