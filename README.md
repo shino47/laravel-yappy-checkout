@@ -249,6 +249,10 @@ E      | **Ejecutado**. El cliente confirmó el pago y se completó la compra.
 R      | **Rechazado**. El cliente no confirma el pago dentro de los cinco minutos que dura la vida del pedido.
 C      | **Cancelado**. El cliente inició el proceso, pero canceló el pedido en el app de Banco General.
 
+**Nota**: Yappy no está enviando peticiones cuando las transacciones quedan rechazadas (`R`). El
+tiempo de espera actualmente es cinco minutos, así que pasado este tiempo tendrás que actualizar
+el estado a _rechazado_.
+
 
 ## Contribuir
 
