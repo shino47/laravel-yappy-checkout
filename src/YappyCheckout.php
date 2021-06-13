@@ -14,6 +14,7 @@ class YappyCheckout
     const TRANSACTION_TYPE = 'VEN';
     const PLATFORM = 'desarrollopropiophp';
 
+    private Client $http;
     private string $secretKey;
     private string $merchantId;
     private string $merchantUrl;
@@ -23,8 +24,9 @@ class YappyCheckout
     private string $pluginVersion;
     private string $sandbox;
 
-    public function __construct()
+    public function __construct(Client $http)
     {
+        $this->http = $http;
         $this->secretKey = config('yappy.secret_key');
         $this->merchantId = config('yappy.merchant_id');
         $this->merchantUrl = config('yappy.merchant_url') ?? config('app.url');
@@ -85,8 +87,7 @@ class YappyCheckout
      */
     private function validateCredentials(): ?array
     {
-        $client = new Client();
-        $response = $client->post(self::API_URL, [
+        $response = $this->http->post(self::API_URL, [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'x-api-key' => $this->getApiKey(1),

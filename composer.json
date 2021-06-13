@@ -5,9 +5,18 @@
     "require": {
         "guzzlehttp/guzzle": "^7.0"
     },
+    "require-dev": {
+        "orchestra/testbench": "^6.18",
+        "phpunit/phpunit": "^9.5"
+    },
     "autoload": {
         "psr-4": {
             "BancoGeneral\\YappyCheckout\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BancoGeneral\\YappyCheckout\\Tests\\": "tests"
         }
     },
     "extra": {
