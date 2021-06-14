@@ -62,16 +62,16 @@ class YappyCheckout
         try {
             $content = json_decode($response->getBody()->getContents(), true);
             if ($content && $content['success']) {
-                if (isset($content['unixTimestamp'])) {
-                    $content['unixTimestamp'] = $content['unixTimestamp'] * 1000;
-                }
+                $content['unixTimestamp'] = isset($content['unixTimestamp'])
+                    ? $content['unixTimestamp'] * 1000
+                    : null;
                 return $content;
             }
-            throw new \Exception(json_encode($content));
+            throw new \Exception(var_export($content, true));
         }
         catch (\Exception $e) {
             if ($this->logsEnabled) {
-                Log::error('[YAPPY] ' . $e->getMessage());
+                Log::error('[YAPPY] Error al validar credenciales: ' . $e->getMessage());
             }
             return null;
         }
@@ -226,7 +226,7 @@ class YappyCheckout
         }
         catch (\Exception $e) {
             if ($this->logsEnabled) {
-                Log::error('[YAPPY] Error al verificar el estado: ' . json_encode($data));
+                Log::error('[YAPPY] Error al verificar el estado: ' . var_export($data, true));
             }
             return null;
         }

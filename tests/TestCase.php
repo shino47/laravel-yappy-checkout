@@ -4,17 +4,12 @@ namespace BancoGeneral\YappyCheckout\Tests;
 
 use BancoGeneral\YappyCheckout\YappyCheckout;
 use BancoGeneral\YappyCheckout\YappyCheckoutServiceProvider;
-use GuzzleHttp\Client;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     public function setUp(): void
     {
         parent::setUp();
-
-        app()->bind(YourService::class, function() {
-            // TODO: return new YappyCheckout(new Client());
-        });
     }
 
     protected function getPackageProviders($app)
@@ -26,7 +21,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        // TODO: config vars
+        $app['config']->set('yappy.secret_key', 'eWV5by50ZXN0');
+        $app['config']->set('yappy.merchant_id', 'abc123');
+        $app['config']->set('yappy.logs_enabled', false);
     }
 
     protected function getPackageAliases($app)
