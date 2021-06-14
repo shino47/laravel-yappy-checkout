@@ -18,6 +18,10 @@
     <include>
       <directory suffix=".php">src/</directory>
     </include>
+
+    <exclude>
+      <file>src/YappyCheckoutServiceProvider.php</file>
+    </exclude>
   </coverage>
 
   <testsuites>
