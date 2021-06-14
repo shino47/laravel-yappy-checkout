@@ -1,5 +1,11 @@
 # Laravel Yappy Checkout
 
+
+![Tests](https://github.com/shino47/laravel-yappy-checkout/actions/workflows/tests.yml/badge.svg)
+![Latest Stable Version](https://img.shields.io/packagist/v/shino47/laravel-yappy-checkout)
+![License](https://img.shields.io/packagist/l/shino47/laravel-yappy-checkout)
+
+
 Implementación del Botón de Pago Yappy para Laravel.
 
 Este paquete está basado en la [Librería en PHP](https://www.bgeneral.com/desarrolladores/boton-de-pago-yappy/sdk-en-php)
