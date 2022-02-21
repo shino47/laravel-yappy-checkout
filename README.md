@@ -50,7 +50,7 @@ YAPPY_MERCHANT_ID=
 YAPPY_MERCHANT_URL=
 YAPPY_SUCCESS_URL=
 YAPPY_FAIL_URL=
-YAPPY_LOGS_ENABLED=
+YAPPY_LOGS_ENABLED=true
 ```
 
 Variable           | Tipo     | Descripción
@@ -96,8 +96,9 @@ El flujo del pago es sencillo y se resume en lo siguiente:
 pago.
 3. Si todo sale bien, el usuario es redireccionado a la URL generada. Ya aquí el usuario está
 fuera de nuestra aplicación. El flujo continúa del lado de Yappy.
-4. Luego de que se haga, falle o cancele la transacción, Yappy nos hará una petición a un endpoint
-de nuestra aplicación.
+4. Luego de que se haga, falle o cancele la transacción, el usuario será redirigido a la URL
+definida en `YAPPY_SUCCESS_URL` o `YAPPY_FAIL_URL`. Yappy nos hará una petición a un endpoint de
+nuestra aplicación.
 5. En esta petición Yappy nos envía el número de orden y el estado de la transacción. Somos libres
 de jugar con esta información en nuestra aplicación.
 
@@ -138,7 +139,7 @@ de las siguientes maneras.
 
 ```html
 <!-- Para la versión 1.0.1 -->
-<script src="https://cdn.jsdelivr.net/gh/shino47/laravel-yappy-checkout@1.0.1/resources/assets/js/yappy-checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/shino47/laravel-yappy-checkout@1.1.1/resources/assets/js/yappy-checkout.js"></script>
 
 <!-- Para la última versión. Inestable, sólo para machotes. -->
 <script src="https://cdn.jsdelivr.net/gh/shino47/laravel-yappy-checkout@main/resources/assets/js/yappy-checkout.js"></script>
@@ -203,6 +204,19 @@ Variable   | Tipo            | Descripción
 `phone`    | `string`        | El número de teléfono del usuario (opcional).
 
 Si todo sale bien, el usuario será redirigido a esa URL generada.
+
+### Páginas de estado
+
+Una vez que se haya hecho o se cancele la transacción, el usuario será redirigido a nuestro sitio
+web. Para ello, debemos definir las variables `YAPPY_SUCCESS_URL` y `YAPPY_FAIL_URL`. Pueden ser,
+por ejemplo:
+
+```ini
+YAPPY_SUCCESS_URL="${APP_URL}/pago-recibido"
+YAPPY_FAIL_URL="${APP_URL}/pago-fallido"
+```
+
+Recuerda definir esas rutas en tu `routes/web.php` y crearles sus vistas.
 
 ### Recibir el estado de la transacción
 
